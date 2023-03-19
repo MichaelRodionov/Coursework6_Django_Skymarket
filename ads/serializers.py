@@ -9,15 +9,6 @@ from users.serializers import UserSerializer
 # ----------------------------------------------------------------
 # comment serializer
 class CommentSerializer(serializers.ModelSerializer):
-    """Serializer for ListAPIView of comments"""
-    author: serializers.SlugRelatedField = serializers.SlugRelatedField(read_only=True, slug_field='email')
-
-    class Meta:
-        model: Comment = Comment
-        fields: list = ['text', 'author', 'id']
-
-
-class CommentDetailCreateSerializer(serializers.ModelSerializer):
     """Serializer for DetailAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView of comments"""
     author_id: serializers.IntegerField = serializers.IntegerField()
     ad_id: serializers.IntegerField = serializers.IntegerField()

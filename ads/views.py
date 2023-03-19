@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from ads.filters import AdvertisementFilter
 from ads.models import Advertisement, Comment
 from ads.permissions import IsUsersOrUserAdmin
-from ads.serializers import AdvertisementSerializer, CommentSerializer, CommentDetailCreateSerializer
+from ads.serializers import AdvertisementSerializer, CommentSerializer
 
 
 # ----------------------------------------------------------------
@@ -121,21 +121,12 @@ class AdRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 # ----------------------------------------------------------------
 # comments views
 class CommentListCreateView(ListCreateAPIView):
-    default_serializer: CommentSerializer = CommentSerializer
-    serializers: dict = {
-        'create': CommentDetailCreateSerializer
-    }
+    serializer_class: CommentSerializer = CommentSerializer
     permission_classes: tuple = (IsAuthenticated, )
-
-    def get(self, request, *args, **kwargs) -> Response:
-        self.pagination_class = Paginator
-        return self.list(request, *args, **kwargs)
+    pagination_class = Paginator
 
     def get_queryset(self) -> QuerySet:
         return Comment.objects.filter(ad=self.kwargs.get('ad_pk'))
-
-    def get_serializer_class(self) -> CommentDetailCreateSerializer | CommentSerializer:
-        return self.serializers.get('create') if self.request.method == 'POST' else self.default_serializer
 
     @extend_schema(
         description="Retrieve a list of comments from one advertisement by pk",
@@ -153,7 +144,7 @@ class CommentListCreateView(ListCreateAPIView):
 
 
 class CommentRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    serializer_class: CommentDetailCreateSerializer = CommentDetailCreateSerializer
+    serializer_class: CommentSerializer = CommentSerializer
     permissions: dict = {
         'retrieve': [IsAuthenticated()],
         'update': [IsAuthenticated(), IsUsersOrUserAdmin()],
