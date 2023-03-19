@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "coursework6-django-skymarket"
+version = "0.1.0"
+description = ""
+authors = ["Michael Rodionov"]
+readme = "README.md"
+packages = [{include = "coursework6_django_skymarket"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.1.7"
+psycopg2-binary = "^2.9.5"
+pillow = "^9.4.0"
+djangorestframework = "^3.14.0"
+drf-spectacular = "^0.26.1"
+django-cors-headers = "^3.14.0"
+python-dotenv = "^1.0.0"
+djoser = "^2.1.0"
+django-filter = "^22.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
