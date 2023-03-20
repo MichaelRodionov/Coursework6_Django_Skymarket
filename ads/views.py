@@ -70,7 +70,7 @@ class AdvertisementPersonalListView(ListAPIView):
 
 
 class AdRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    queryset: QuerySet = Advertisement.objects.all()
+    queryset: QuerySet = Advertisement.objects.all().order_by('-created_at')
     serializer_class: AdvertisementSerializer = AdvertisementSerializer
     permissions: dict = {
         'retrieve': [IsAuthenticated()],
@@ -126,7 +126,7 @@ class CommentListCreateView(ListCreateAPIView):
     pagination_class = Paginator
 
     def get_queryset(self) -> QuerySet:
-        return Comment.objects.filter(ad=self.kwargs.get('ad_pk'))
+        return Comment.objects.filter(ad=self.kwargs.get('ad_pk')).order_by('-created_at')
 
     @extend_schema(
         description="Retrieve a list of comments from one advertisement by pk",

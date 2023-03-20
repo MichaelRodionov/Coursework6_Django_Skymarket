@@ -78,6 +78,6 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model: Advertisement = Advertisement
-        fields: list[str] = ['pk', 'image', 'title', 'price', 'phone', 'description', 'author_first_name',
-                             'author_last_name', 'author_id']
+        fields: list = ['pk', 'image', 'title', 'price', 'phone', 'description', 'author_first_name',
+                        'author_last_name', 'author_id']
 

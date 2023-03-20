@@ -16,8 +16,6 @@ class Advertisement(Model):
         verbose_name: str = 'Объявление'
         verbose_name_plural: str = 'Объявления'
 
-        ordering: list[str] = ['-created_at']
-
 
 # ----------------------------------------------------------------
 # comment model
@@ -31,4 +29,3 @@ class Comment(Model):
         verbose_name: str = 'Комментарий'
         verbose_name_plural: str = 'Комментарии'
 
-        ordering: list[str] = ['-created_at']
