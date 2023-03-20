@@ -1,5 +1,4 @@
-from django.core.validators import MinValueValidator
-from django.db.models import Model, ImageField, CharField, IntegerField, ForeignKey, CASCADE, DateTimeField
+from django.db.models import Model, ImageField, CharField, ForeignKey, CASCADE, DateTimeField, PositiveIntegerField
 
 
 # ----------------------------------------------------------------
@@ -7,7 +6,7 @@ from django.db.models import Model, ImageField, CharField, IntegerField, Foreign
 class Advertisement(Model):
     image = ImageField(upload_to='images/', null=True)
     title = CharField(max_length=50)
-    price: IntegerField = IntegerField(validators=[MinValueValidator(0)])
+    price: PositiveIntegerField = PositiveIntegerField()
     author: ForeignKey = ForeignKey('users.User', on_delete=CASCADE)
     created_at: DateTimeField = DateTimeField(auto_now_add=True)
     description: CharField = CharField(max_length=1000, null=True)
@@ -20,7 +19,7 @@ class Advertisement(Model):
 # ----------------------------------------------------------------
 # comment model
 class Comment(Model):
-    text: CharField = CharField(max_length=200)
+    text: CharField = CharField(max_length=500)
     author: ForeignKey = ForeignKey('users.User', on_delete=CASCADE)
     created_at: DateTimeField = DateTimeField(auto_now_add=True)
     ad = ForeignKey(Advertisement, on_delete=CASCADE)

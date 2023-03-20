@@ -51,4 +51,3 @@ class User(AbstractBaseUser):
     @property
     def is_user(self) -> bool:
         return self.role == User.Roles.USER
-
