@@ -12,19 +12,19 @@ class User(AbstractBaseUser):
         ADMIN = 'admin', 'Администратор'
         USER = 'user', 'Пользователь'
     USERNAME_FIELD: str = 'email'
-    REQUIRED_FIELDS: list = ['first_name', 'last_name', 'phone', "role"]
+    REQUIRED_FIELDS: list[str] = ['first_name', 'last_name', 'phone', "role"]
 
     objects: UserManager = UserManager()
 
-    first_name: models.CharField = models.CharField(max_length=150, blank=True)
-    last_name: models.CharField = models.CharField(max_length=150, blank=True)
-    email: models.EmailField = models.EmailField(unique=True, null=True)
-    password: models.CharField = models.CharField(max_length=200)
-    phone: models.CharField = models.CharField(max_length=20, null=True)
-    role: models.CharField = models.CharField(max_length=15, choices=Roles.choices, default=Roles.USER)
-    image: models.ImageField = models.ImageField(upload_to='images/', null=True)
-    is_active: models.BooleanField = models.BooleanField(default=True)
-    last_login: models.DateTimeField = models.DateTimeField(auto_now_add=True)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    email = models.EmailField(unique=True, null=True)
+    password = models.CharField(max_length=200)
+    phone = models.CharField(max_length=20, null=True)
+    role = models.CharField(max_length=15, choices=Roles.choices, default=Roles.USER)
+    image = models.ImageField(upload_to='images/', null=True)
+    is_active = models.BooleanField(default=True)
+    last_login = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name: str = 'Пользователь'

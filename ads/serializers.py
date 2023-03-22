@@ -1,35 +1,17 @@
-from typing import Any
-
 from rest_framework import serializers
 
 from ads.models import *
-from users.serializers import UserSerializer
 
 
 # ----------------------------------------------------------------
 # comment serializer
 class CommentSerializer(serializers.ModelSerializer):
     """Serializer for DetailAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView of comments"""
-    author_id: serializers.IntegerField = serializers.IntegerField()
-    ad_id: serializers.IntegerField = serializers.IntegerField()
-    author_first_name: serializers.SerializerMethodField = serializers.SerializerMethodField()
-    author_last_name: serializers.SerializerMethodField = serializers.SerializerMethodField()
-    author_image: serializers.SerializerMethodField = serializers.SerializerMethodField(read_only=True)
-
-    def get_author_first_name(self, com) -> Any:
-        request: Any = self.context.get('request')
-        serializer: UserSerializer = UserSerializer(instance=com.author, context={'request': request})
-        return serializer.data.get('first_name')
-
-    def get_author_last_name(self, com) -> Any:
-        request: Any = self.context.get('request')
-        serializer: UserSerializer = UserSerializer(instance=com.author, context={'request': request})
-        return serializer.data.get('last_name')
-
-    def get_author_image(self, com) -> Any:
-        request: Any = self.context.get('request')
-        serializer: UserSerializer = UserSerializer(instance=com.author, context={'request': request})
-        return serializer.data.get('image')
+    author_id = serializers.IntegerField()
+    ad_id = serializers.IntegerField()
+    author_first_name = serializers.CharField(source='author.first_name', required=False)
+    author_last_name = serializers.CharField(source='author.last_name', required=False)
+    author_image = serializers.ImageField(source='author.image', read_only=True)
 
     def is_valid(self, raise_exception=False) -> bool:
         """Method to check initial data"""
@@ -43,7 +25,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model: Comment = Comment
-        fields: list = [
+        fields: list[str] = [
             'pk', 'text', 'author_id', 'created_at', 'author_first_name', 'author_last_name', 'ad_id', 'author_image'
         ]
 
@@ -52,29 +34,16 @@ class CommentSerializer(serializers.ModelSerializer):
 # Advertisement serializer
 class AdvertisementSerializer(serializers.ModelSerializer):
     """Serializer for full CRUD"""
-    author_id: serializers.IntegerField = serializers.IntegerField(required=False)
-    author_first_name: serializers.SerializerMethodField = serializers.SerializerMethodField()
-    author_last_name: serializers.SerializerMethodField = serializers.SerializerMethodField()
-    phone: serializers.SerializerMethodField = serializers.SerializerMethodField()
-
-    def get_author_first_name(self, ad) -> Any:
-        return ad.author.first_name
-
-    def get_author_last_name(self, ad) -> Any:
-        return ad.author.last_name
-
-    def get_phone(self, ad) -> Any:
-        return ad.author.phone
+    author_id = serializers.IntegerField(required=False)
+    author_first_name = serializers.CharField(source='author.first_name', required=False)
+    author_last_name = serializers.CharField(source='author.last_name', required=False)
+    phone = serializers.CharField(source='author.phone', required=False)
 
     def is_valid(self, raise_exception=False) -> bool:
         """Method to check initial data"""
         if not self.initial_data.get('author_id'):
             self.initial_data['author_id'] = self.context['request'].user.id
         return super().is_valid(raise_exception=raise_exception)
-
-    def create(self, validated_data) -> Advertisement:
-        """Method to create instance of advertisement"""
-        return Advertisement.objects.create(**validated_data)
 
     class Meta:
         model: Advertisement = Advertisement

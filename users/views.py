@@ -3,7 +3,6 @@ from djoser.views import UserViewSet
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.response import Response
 
 from users.serializers import ChangePasswordSerializer
 
@@ -64,10 +63,7 @@ class Paginator(PageNumberPagination):
 )
 class CustomUserViewSet(UserViewSet):
     serializer_class: ChangePasswordSerializer = ChangePasswordSerializer
-
-    def list(self, request, *args, **kwargs) -> Response:
-        self.pagination_class = Paginator
-        return super().list(request, *args, **kwargs)
+    pagination_class = Paginator
 
     @action(["post"], detail=False)
     def set_password(self, request, *args, **kwargs) -> JsonResponse:
